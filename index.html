@@ -1,384 +1,651 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Ryan Bautista | My Web CV Portfolio</title>
-	<meta name="description" content="Ryan Bautista, Web Designer. A competent and dedicated person with experience in design and coding of websites." />
-	<meta name="keywords" content="portfolio, CV, web, web designer, web developer" />
-	<link rel="shortcut icon" href="images/favicon.jpg" type="image/png" />
-	<meta name="google-site-verification" content="q-7ejO1_PZ_1VmEen-AzZT4zIMr53wiVfOk7g6dbXXI" />
-	<!-- jQuery Library -->
-	<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>	<script src="js/imagesloaded.pkgd.min.js" type="text/javascript"></script>	<!-- Bootstrap -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="css/bootstrap.min.css" rel="stylesheet" />
-	<script src="js/bootstrap.min.js" type="text/javascript"></script>
-	<!-- jQuery UI -->
-	<link rel="stylesheet" href="css/jquery-ui.css" />
-	<script src="js/jquery-ui.js" type="text/javascript"></script>
-	<!-- Isotope -->
-	<script src="js/isotope.pkgd.min.js" type="text/javascript"></script>
-	<!-- Modernizr -->
-	<script src="js/modernizr.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="css/stylesheet.css" media="all" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryan Bautista — Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Syncopate', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        .grid-border {
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        .dark .grid-border {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        #mobile-menu {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        /* Premium smooth transition animations between pages */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Smooth Fluid Text-Swapping Transition Engine */
+        .text-animate-block {
+            display: inline-block;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .text-animate-block.text-hidden {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+    </style>
 </head>
+<body class="bg-stone-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 font-sans antialiased selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
 
-<body>
+    <nav class="sticky top-0 z-50 bg-stone-50/80 dark:bg-neutral-950/80 backdrop-blur-md border-b grid-border">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" onclick="switchTab('about')" class="font-display text-sm tracking-widest font-bold">
+                R.BAUTISTA <span class="font-sans font-light text-neutral-400 dark:text-neutral-500">©2026</span>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-10 text-xs uppercase tracking-widest font-mono">
+                <button onclick="switchTab('about')" class="nav-link text-neutral-900 dark:text-white font-bold transition-colors"><span>[01]</span> About</button>
+                <button onclick="switchTab('expertise')" class="nav-link text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"><span>[02]</span> Expertise</button>
+                <button onclick="switchTab('experience')" class="nav-link text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"><span>[03]</span> Experience</button>
+                <button onclick="switchTab('works')" class="nav-link text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"><span>[04]</span> Works</button>
+                <button onclick="switchTab('contact')" class="nav-link text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"><span>[05]</span> Contact</button>
+            </nav>
+            
+            <div class="flex items-center space-x-6">
+                <button id="theme-toggle" class="group flex items-center space-x-2 text-xs uppercase tracking-widest font-medium p-2 focus:outline-none">
+                    <span class="inline-block w-2 h-2 rounded-full bg-neutral-900 dark:bg-white animate-pulse"></span>
+                    <span class="dark:hidden">Dark Space</span>
+                    <span class="hidden dark:inline">Light Space</span>
+                </button>
 
-<div class="container">
+                <button id="menu-btn" class="md:hidden flex flex-col justify-center items-end w-6 h-6 space-y-1.5 focus:outline-none z-50">
+                    <span id="line1" class="w-6 h-[1.5px] bg-neutral-900 dark:bg-white transition-transform duration-300"></span>
+                    <span id="line2" class="w-4 h-[1.5px] bg-neutral-900 dark:bg-white transition-all duration-300"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-<div class="row">
-	<aside class="col-sm-4">
-		<header id="logo">
-			<a href="index.html" title="Ryan Bautista">
-				<h1>Ryan Bautista</h1>
-				<h2>Web Designer</h2>
-			</a>
-		</header>
-		<article id="accordion">
-			<h2>Who Am I</h2>
-			<div class="accordionContent">
-				<p>“A competent and dedicated person with experience in design and coding of websites. I am able to work alongside other talented IT professionals. I possess a considerable knowledge in the web development. I am eager to learn and able to adapt quickly to new environment as needed.”</p>
-			</div>
-			<h2>What I possess</h2>
-			<div class="accordionContent">
-				<h3>Programming Skills</h3>
-				<ul>
-					<li id="html"></li>
-					<li id="css"></li>
-					<li id="bootstrap"></li>
-					<li id="javascript"></li>
-					<li id="php"></li>
-				</ul>
-				<h3>Development Tools</h3>
-				<ul>
-					<li id="fatwire"></li>
-					<li id="photoshop"></li>
-					<li id="joomla"></li>
-					<li id="corel"></li>
-					<li id="wordpress"></li>
-					<li id="illustrator"></li>
-					<li id="dreamweaver"></li>
-					<li id="flash"></li>
-					<li id="fireworks"></li>
-					<li id="seo"></li>
-				</ul>
-				<script src="js/jqbar.js" type="text/javascript"></script>
-				<script type="text/javascript">
-				<!--
-					$(this).ready(function () {
-						$('#html').jqbar({ label: 'HTML/HTML5', value: 90, barColor: '#f00' });
-						$('#css').jqbar({ label: 'CSS/CSS3', value: 90, barColor: '#f00' });
-						$('#bootstrap').jqbar({ label: 'Bootstrap', value: 80, barColor: '#f00' });
-						$('#javascript').jqbar({ label: 'JavaScript/jQuery', value: 50, barColor: '#f00' });
-						$('#php').jqbar({ label: 'PHP/mySQL', value: 40, barColor: '#f00' });
+    <div id="mobile-menu" class="fixed inset-0 bg-stone-50 dark:bg-neutral-950 z-40 flex flex-col justify-between p-8 opacity-0 pointer-events-none transform translate-y-4">
+        <div class="flex flex-col space-y-8 pt-24 font-display text-2xl uppercase tracking-wider">
+            <button onclick="switchTab('about'); toggleMobileMenu();" class="text-left py-2 border-b grid-border flex justify-between items-center">
+                <span>About</span> <span class="font-sans text-xs text-neutral-400 font-mono">[01]</span>
+            </button>
+            <button onclick="switchTab('expertise'); toggleMobileMenu();" class="text-left py-2 border-b grid-border flex justify-between items-center">
+                <span>Expertise</span> <span class="font-sans text-xs text-neutral-400 font-mono">[02]</span>
+            </button>
+            <button onclick="switchTab('experience'); toggleMobileMenu();" class="text-left py-2 border-b grid-border flex justify-between items-center">
+                <span>Experience</span> <span class="font-sans text-xs text-neutral-400 font-mono">[03]</span>
+            </button>
+            <button onclick="switchTab('works'); toggleMobileMenu();" class="text-left py-2 border-b grid-border flex justify-between items-center">
+                <span>Works</span> <span class="font-sans text-xs text-neutral-400 font-mono">[04]</span>
+            </button>
+            <button onclick="switchTab('contact'); toggleMobileMenu();" class="text-left py-2 border-b grid-border flex justify-between items-center">
+                <span>Contact</span> <span class="font-sans text-xs text-neutral-400 font-mono">[04]</span>
+            </button>
+        </div>
+        <div class="text-center font-mono text-[10px] text-neutral-400 uppercase tracking-widest">
+            Ryan Bautista — ©2026
+        </div>
+    </div>
 
-						$('#fatwire').jqbar({ label: 'Fatwire (CMS)', value: 95, barColor: '#f00' });
-						$('#photoshop').jqbar({ label: 'Photoshop', value: 80, barColor: '#f00' });
-						$('#joomla').jqbar({ label: 'Joomla (CMS)', value: 30, barColor: '#f00' });
-						$('#corel').jqbar({ label: 'CorelDRAW X4', value: 40, barColor: '#f00' });
-						$('#wordpress').jqbar({ label: 'Wordpress (CMS)', value: 70, barColor: '#f00' });
-						$('#illustrator').jqbar({ label: 'Illustrator', value: 25, barColor: '#f00' });
-						$('#dreamweaver').jqbar({ label: 'Dreamweaver', value: 80, barColor: '#f00' });
-						$('#flash').jqbar({ label: 'Flash Pro', value: 55, barColor: '#f00' });
-						$('#fireworks').jqbar({ label: 'Fireworks', value: 60, barColor: '#f00' });
-						$('#seo').jqbar({ label: 'SEO optimization', value: 70, barColor: '#f00' });
-					});
-				-->
-				</script>
-			</div>
-			<h2>Where did I learn</h2>
-			<div class="accordionContent">
-				<div id="accordion1">
-					<h3>WORK EXPERIENCE:</h3>
-					<div class="accordionContent">
-						<h4>Front End Developer | Hibu Phils. (Jan 2013 - Present)</h4>
-						<ul>
-							<li>Write pure, standards-compliant code</li>
-							<li>Work closely with web designers and translate their designs into websites.</li>
-							<li>Test, debug, and build code that works across multiple browsers and digital platforms</li>
-							<li>Possess expertise in HTML and HTML5, JavaScript, CSS, jQuery, and other coding modalities.</li>
-						</ul>
-						<h4>Web and Graphic Designer | Freelance (Nov 2011 - Present)</h4>
-						<ul>
-							<li>Provides Graphic Design and Web Development services for the company’s products and services.</li>
-							<li>Discuss and create the ideas for the layout and organization of the project being taken.</li>
-						</ul>
-					</div>
-					<h3>EDUCATION:</h3>
-					<div class="accordionContent">
-						<h4>Web Programming</h4>
-						<p>STI San Pedro, Institute<br>
-						(June 2010 – August 2010)</p>
-					</div>
-					<h3>TRAINING AND SEMINAR:</h3>
-					<div class="accordionContent">
-						<dl>
-							<dt>InterworX | Asian College of Science and Technology (August 2002)</dt>
-							<dd>- introduce and discuss how internet works</dd>
-						</dl>
-						<dl>
-							<dt>Weaving the Web | Asian College of Science and Technology (August 2002)</dt>
-							<dd>- Introduce and demonstrate how to use Adobe Dreamweaver</dd>
-						</dl>
-						<dl>
-							<dt>Flash on Web | Asian College of Science and Technology (August 2002)</dt>
-							<dd>- discuss and demonstrate the use Adobe Flash 4</dd>
-						</dl>
-					</div>
-				</div>
-			</div>
-		</article>
-	</aside>
-	<section id="contentWrapper" class="col-sm-8">
-		<h1>My Web portfolio</h1>
-		<div id="filter" data-filter-key="filter">
-			<a href="#filter" data-filter-value="*">Show All</a>&nbsp;|&nbsp;
-			<a href="#filter" data-filter-value=".freelance">Freelance Work</a>&nbsp;|&nbsp;
-			<a href="#filter" data-filter-value=".build">Fixed Websites</a>&nbsp;|&nbsp;
-			<a href="#filter" data-filter-value=".responsive">Responsive Websites</a>
-		</div>
-		<div id="gallery">
-			<div class="item responsive">
-				<a href="http://courtneypianos.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/courtneypianos.jpg" title="Courtney Pianos" alt="Courtney Pianos" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.towersurveys.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/towersurveys.jpg" title="Tower Surveys Ltd." alt="Tower Surveys Ltd." width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://keyloosaylsham.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/keyloosaylsham.jpg" title="Key Loos" alt="Key Loos" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://edwardmcneil.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/edwardmcneil.jpg" title="Edward McNeil" alt="Edward McNeil" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://chartersdrive.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/chartersdrive.jpg" title="Charter Self Drive" alt="Charter Self Drive" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.orion-lightningprotection.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/orion-lightningprotection.jpg" title="Orion Lightning Protection Ltd" alt="Orion Lightning Protection Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://tia3d.ybsitecenter.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/tia3d.jpg" title="Technical Image Applications" alt="Technical Image Applications" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.termapest.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/termapest.jpg" title="Termapest" alt="Termapest" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.openings.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/openings.jpg" title="Overcare Ltd t/a Openings" alt="Overcare Ltd t/a Openings" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://knightontyreserviceltd.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/knightontyreserviceltd.jpg" title="Knighton Tyre Service Ltd" alt="Knighton Tyre Service Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.chelseabridgeautocentre.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/chelseabridgeautocentre.jpg" title="Chelsea Bridge Auto" alt="Chelsea Bridge Auto" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.mitchellroofingservices.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/mitchellroofingservices.jpg" title="Mitchell Roofing" alt="Mitchell Roofing" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.mortonandjones.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/mortonandjones.jpg" title="Morton & Jones Ltd." alt="Morton & Jones Ltd." width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.churcherfunerals-gosport.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/churcherfunerals-gosport.jpg" title="Churcher & Tribbeck - Funeral directors in Gosport" alt="Churcher & Tribbeck - Funeral directors in Gosport" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://taverhamconservatories.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/taverhamconservatories.jpg" title="Taverham Conservatories" alt="Taverham Conservatories" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.msm-tyres.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/msm-tyres.jpg" title="Maidenhead and Slough" alt="Maidenhead and Slough" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://boilerhealthcare.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/boilerhealthcare.jpg" title="Boiler Healthcare Ltd." alt="Boiler Healthcare Ltd." width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.activesec.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/activesec.jpg" title="Active Security" alt="Active Security" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://welfauxmh.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/welfauxmh.jpg" title="Welfaux Materials Handling" alt="Welfaux Materials Handling" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.dunstallparkgaragesltd.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/dunstallparkgaragesltd.jpg" title="Dunstall Park Garages Ltd" alt="Dunstall Park Garages Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://stoddards-fuel.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/stoddards-fuel.jpg" title="Stoddards Ltd" alt="Stoddards Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://deebridgeelectrical.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/deebridgeelectrical.jpg" title="Deebridge Electrical Engineers" alt="Deebridge Electrical Engineers" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://allclearsussex.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/allclearsussex.jpg" title="All Clear Sussex LTD" alt="All Clear Sussex LTD" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.moranroofing.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/moranroofing.jpg" title="Moran Roofing" alt="Moran Roofing" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://ecautocare.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/ecautocare.jpg" title="E C Autocare" alt="E C Autocare" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.moranroofing.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/moranroofing.jpg" title="Moran Roofing" alt="Moran Roofing" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.cwoodandson.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/cwoodandson.jpg" title="C Wood & Son" alt="C Wood & Son" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://abbeytravel-london.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/abbeytravel-london.jpg" title="Abbey Travel" alt="Abbey Travel" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.concreteexpress.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/concreteexpress.jpg" title="Concrete Express" alt="Concrete Express" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://deaveshomeimprovements.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/deaveshomeimprovements.jpg" title="Deaves Craftsmen" alt="Deaves Craftsmen" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.aacme-glass.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/aacme-glass.jpg" title="Aacme Glass Ltd" alt="Aacme Glass Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.newforesticecreamltd.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/newforesticecreamltd.jpg" title="New Forest Ice Cream" alt="New Forest Ice Cream" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.1st-reaction.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/1st-reaction.jpg" title="Aacme Glass Ltd" alt="Aacme Glass Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.jetviewproperties.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/jetviewproperties.jpg" title="Jetview Properties Ltd" alt="Jetview Properties Ltd" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.merciadrain.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/merciadrain.jpg" title="Mercia Drain" alt="Mercia Drain" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.hoskins-funeralservices-1.ybsitecenter.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/hoskins-funeralservices.jpg" title="Hoskins Family Funeral Service" alt="Hoskins Family Funeral Service" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.glynjones.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/glynjones.jpg" title="Glyn Jones Opticians" alt="Glyn Jones Opticians" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.appliancerepair-man.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/appliancerepair-man.jpg" title="Appliance Repair Man" alt="Appliance Repair Man" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item responsive">
-				<a href="http://www.windowadvicecentre.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/windowadvicecentre.jpg" title="Window Advice Centre" alt="Window Advice Centre" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item build">
-				<a href="http://www.drainsaheadltd.co.uk/" target="_blank">
-					<img class="img-responsive" src="images/gallery/drainsaheadltd.jpg" title="Drains Ahead" alt="Drains Ahead" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item freelance">
-				<a href="http://www.lapugon.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/lapugon.jpg" title="La Pugon by Ancestral" alt="La Pugon by Ancestral" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item freelance">
-				<a href="http://www.lapugonbyancestral.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/lapugonbyancestral.jpg" title="La Pugon by Ancestral" alt="La Pugon by Ancestral" width="230" height="300" />
-				</a>
-			</div>
-			<div class="item freelance">
-				<a href="http://www.elporticio.com/" target="_blank">
-					<img class="img-responsive" src="images/gallery/elporticio.jpg" title="El Porticio by Ancestral" alt="El Porticio by Ancestral" width="230" height="300" />
-				</a>
-			</div>
-		</div>
-		<div id="Outro">
-			<h2>Lets make your great Ideas happen</h2>
-		</div>
-		<footer>
-			<div class="col-sm-9">
-				<p id="copyright">&copy; Copyright 2015 | Ryan Bautista | Some Rights Reserved</p>
-			</div>
-			<div class="col-sm-3" id="socialmedia">
-				<a href="http://www.facebook.com/ryan3sg" target="_blank">
-					<img class="img-responsive" src="images/facebook-icon.png" width="37" height="37" title="Follow me on Facebook" alt="Facebook Icon" />
-				</a>
-				<a href="http://www.twitter.com/ryan3sg" target="_blank">
-					<img class="img-responsive" src="images/twitter-icon.png" width="37" height="37" title="Follow me on Twitter" alt="Facebook Icon" />
-				</a>
-				<a href="http://plus.google.com/+RyeAyan" target="_blank">
-					<img class="img-responsive" src="images/googleplus-icon.png" width="37" height="37" title="Add me on Google+" alt="Facebook Icon" />
-				</a>
-			</div>
-		</footer>
-		<div>
-			<a href="#" class="scrollToTop"></a>
-		</div>
-	</section>
-</div>
-</div>
-<script src="js/myScript.js" type="text/javascript"></script>
+
+    <main id="page-about" class="tab-content active visible">
+        <header class="border-b grid-border max-w-7xl mx-auto px-6 py-16 md:py-28">
+            <div class="space-y-4">
+                <div class="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-mono">
+                    [ Web Developer / Profile Introduction ]
+                </div>
+                <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tighter uppercase leading-none min-h-[2em]">
+                    <span id="hero-line1" class="text-animate-block">CRAFTING</span><br>
+                    <span id="hero-line2" class="text-animate-block text-neutral-400 dark:text-neutral-500">WEB</span>
+                </h1>
+            </div>
+            
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8 border-t grid-border">
+                <div class="lg:col-span-4 text-xs font-mono text-neutral-400 uppercase tracking-wider space-y-2">
+                    <div>// Core Focus Matrix:</div>
+                    <div class="text-neutral-900 dark:text-white font-sans text-sm mt-1">
+                        Front-End Architecture: <span class="font-bold">80%</span><br>
+                        Back-End Orchestration: <span class="font-bold">20%</span>
+                    </div>
+                </div>
+                <div class="lg:col-span-8">
+                    <p class="text-lg md:text-xl font-light leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-3xl">
+                        I build scalable, high-performance web applications for a diverse portfolio of cross-border clients and prominent local financial institutions. My professional path tracks a clear evolution from design execution to technical lead architecture.
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <section class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 border-b grid-border text-xs uppercase tracking-widest">
+            <div class="p-8 border-b md:border-b-0 md:border-r grid-border space-y-2">
+                <span class="text-neutral-400 font-mono">[01]</span>
+                <h3 class="font-bold block text-sm mt-1">Component Design</h3>
+                <p class="text-neutral-500 font-sans tracking-normal normal-case text-xs mt-2">Translating layout logic into highly reusable, scalable frontend blocks and micro-component definitions.</p>
+            </div>
+            <div class="p-8 border-b md:border-b-0 md:border-r grid-border space-y-2">
+                <span class="text-neutral-400 font-mono">[02]</span>
+                <h3 class="font-bold block text-sm mt-1">Automation Testing</h3>
+                <p class="text-neutral-500 font-sans tracking-normal normal-case text-xs mt-2">Integrating deterministic safety networks into complex enterprise runtime loops via modern browser simulations.</p>
+            </div>
+            <div class="p-8 space-y-2">
+                <span class="text-neutral-400 font-mono">[03]</span>
+                <h3 class="font-bold block text-sm mt-1">Micro Architectures</h3>
+                <p class="text-neutral-500 font-sans tracking-normal normal-case text-xs mt-2">Decoupling heavy codebase structures into clean, dynamic independent runtime applications.</p>
+            </div>
+        </section>
+    </main>
+
+
+    <main id="page-expertise" class="tab-content">
+        <section class="max-w-7xl mx-auto px-6 py-16 md:py-24 border-b grid-border">
+            <div class="space-y-4 mb-16">
+                <div class="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-mono">[ Tech Ecosystem Matrix ]</div>
+                <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tighter">CAPABILITIES</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-8 border-t grid-border">
+                <div class="lg:col-span-4">
+                    <h3 class="font-display text-xs tracking-widest font-bold uppercase text-neutral-400 dark:text-neutral-500">ARCHITECTURAL LAYERS</h3>
+                </div>
+                <div class="lg:col-span-8 divide-y grid-border">
+                    <div class="pb-8 space-y-2">
+                        <h4 class="text-xs uppercase tracking-widest font-mono text-neutral-400">[Front-End Ecosystem]</h4>
+                        <p class="text-lg font-light">React.js, Next.js, Vue.js, Gatsby.js, Redux Saga, MobX, Vuex, MUI, SCSS/SASS, GraphQL, Apollo Client, Micro Frontends.</p>
+                    </div>
+                    <div class="py-8 space-y-2">
+                        <h4 class="text-xs uppercase tracking-widest font-mono text-neutral-400">[Back-End Systems]</h4>
+                        <p class="text-lg font-light">Node.js, Loopback4, MongoDB, OracleDB, Microservices architecture.</p>
+                    </div>
+                    <div class="py-8 space-y-2">
+                        <h4 class="text-xs uppercase tracking-widest font-mono text-neutral-400">[Tools & Analytics]</h4>
+                        <p class="text-lg font-light">Cypress, Mocha testing, Jira, Confluence, GA4 analytics, Google Tag Manager.</p>
+                    </div>
+                    <div class="pt-8 space-y-2">
+                        <h4 class="text-xs uppercase tracking-widest font-mono text-neutral-400">[System Frameworks]</h4>
+                        <p class="text-lg font-light">Unit and E2E testing, technical documentation, and continuous improvement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <main id="page-experience" class="tab-content">
+        <section class="max-w-7xl mx-auto px-6 py-16 md:py-24 border-b grid-border">
+            <div class="space-y-4 mb-16">
+                <div class="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-mono">[ 12 Year Continuous Timeline ]</div>
+                <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tighter">EVOLUTION</h2>
+            </div>
+
+            <div class="divide-y grid-border border-t grid-border">
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/30 transition-colors duration-200 px-2 rounded-lg">
+                    <div class="lg:col-span-4 space-y-1">
+                        <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">[ PRESENT STATUS ]</span>
+                        <h3 class="text-xl font-bold">Metrobank</h3>
+                        <p class="text-xs uppercase tracking-wider font-mono text-neutral-500">Full Stack Developer</p>
+                    </div>
+                    <div class="lg:col-span-8 text-base font-light text-neutral-600 dark:text-neutral-400 space-y-2">
+                        <ul className="prose">
+                        <li>Developing frontend modules using React.js and Redux Saga within a Micro Frontend architecture.</li>
+                        <li>Building backend logic using Node.js (Loopback4) with MongoDB and OracleDB.</li>
+                        <li>Integrating automated testing layers via Cypress and Mocha frameworks.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/30 transition-colors duration-200 px-2 rounded-lg">
+                    <div class="lg:col-span-4 space-y-1">
+                        <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">[ REUSABILITY LAYER ]</span>
+                        <h3 class="text-xl font-bold">Inchcape Digital</h3>
+                        <p class="text-xs uppercase tracking-wider font-mono text-neutral-500">Technical Lead (Front-End)</p>
+                        <div class="pt-2 text-xs text-neutral-900 dark:text-white font-mono italic">↳ Q4 Top Performer Awarded</div>
+                    </div>
+                    <div class="lg:col-span-8 text-base font-light text-neutral-600 dark:text-neutral-400 space-y-2">
+                        <p>• Promoted from Front End Developer to Technical Lead due to engineering excellence.</p>
+                        <p>• Led the integration of frontend components into various host websites using GraphQL and MUI.</p>
+                        <p>• Orchestrated a highly successful 3-month global GA4 / Google Tag Manager analytical implementation tracking framework.</p>
+                    </div>
+                </div>
+
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/30 transition-colors duration-200 px-2 rounded-lg">
+                    <div class="lg:col-span-4 space-y-1">
+                        <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">[ AUSTRALIA CLIENTS ]</span>
+                        <h3 class="text-xl font-bold">EMAPTA / Acurus Pty Ltd</h3>
+                        <p class="text-xs uppercase tracking-wider font-mono text-neutral-500">Front End Developer</p>
+                    </div>
+                    <div class="lg:col-span-8 text-base font-light text-neutral-600 dark:text-neutral-400 space-y-2">
+                        <p>• Managed a diverse tech stack including React.js, Gatsby, and WordPress environments.</p>
+                        <p>• Collaborated directly with cross-border stakeholders to enforce defensive form input runtime validations and core speed benchmarks.</p>
+                    </div>
+                </div>
+
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/30 transition-colors duration-200 px-2 rounded-lg">
+                    <div class="lg:col-span-4 space-y-1">
+                        <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">[ GAME GRAPHICS SYSTEM ]</span>
+                        <h3 class="text-xl font-bold">W-Tech Solutions Inc.</h3>
+                        <p class="text-xs uppercase tracking-wider font-mono text-neutral-500">Front End Developer</p>
+                    </div>
+                    <div class="lg:col-span-8 text-base font-light text-neutral-600 dark:text-neutral-400 space-y-2">
+                        <p>• Focused on interactive game engine visual elements and runtime user controls using Vue.js and SCSS.</p>
+                        <p>• Built robust, reusable layout code libraries to ensure product line scalability.</p>
+                    </div>
+                </div>
+
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/30 transition-colors duration-200 px-2 rounded-lg">
+                    <div class="lg:col-span-4 space-y-1">
+                        <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">[ FOUNDATIONAL BASE ]</span>
+                        <h3 class="text-xl font-bold">TCS / Hibu PH</h3>
+                        <p class="text-xs uppercase tracking-wider font-mono text-neutral-500">Web Designer & Dev</p>
+                    </div>
+                    <div class="lg:col-span-8 text-base font-light text-neutral-600 dark:text-neutral-400 space-y-2">
+                        <p>• Began career path parsing vanilla HTML/CSS markup layout files.</p>
+                        <p>• Translated complex UK-based design wireframes into pixel-perfect, cross-browser compatible web structures.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <main id="page-works" class="tab-content">
+        <section class="max-w-7xl mx-auto px-6 py-16 md:py-24 border-b grid-border">
+            <div class="space-y-4 mb-16">
+                <div class="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-mono">[ Case Studies & Selected Production Code ]</div>
+                <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tighter">SELECTED WORKS</h2>
+            </div>
+
+            <!-- Premium Editorial List Layout for Projects -->
+            <div class="divide-y grid-border border-t grid-border font-sans">
+                
+                <!-- Project 1 -->
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group transition-all duration-300">
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ EIS ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Electronic Invoicing System</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React.js</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">shadcn</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">tailwindcss</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">zustand</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            AI-Driven Development: Pioneering AI-assisted development paradigms by utilizing Claude Code and autonomous agents ("vibe coding") to rapidly prototype components, accelerate test coverage, and streamline the development lifecycle.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: In Progress</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group transition-all duration-300">
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Wealth Manager ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Drag & Drop Feature</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React.js</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Redux Saga</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">dnd-kit</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Enhanced UX interactivity by implementing a intuitive drag-and-drop system for bond filters, streamlining how users manipulate data.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Enhanced</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Wealth Manager ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Responsive UI Enhancements</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React.js</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Redux Saga</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Optimized the bond listing page's responsiveness, ensuring seamless card-item rendering and visual consistency across all screen sizes.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Optimized</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Wealth Manager ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Data Integrity Warning</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">react-router</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Safeguarded transaction workflows by adding popup warning system that prevents accidental data loss when users attempt to navigate away mid-process.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Safeguarded</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Wealth Manager ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">PDF Generation</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Loopback4</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">html2pdf</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Generated the template for bond purchase receipts upon transaction completion.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Templated</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Wealth Manager ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Micro-Frontend Preparation</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Webpack</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Module Federation</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Prepared the Wealth Manager platform for a micro-frontend architecture, laying the groundwork for improved scalability.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Prepared</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 group transition-all duration-300">
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Data Analytics Integration ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Global GA4 Implementation</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">GA4 Analytics</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">GTM</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">Tag Manager</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Designed and deployed an automated enterprise analytical integration framework across the platforms. Unified custom digital behaviors and data layers under an optimized tracking protocol without compromising baseline load-speed metrics.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Scaled Globally</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Finance Calculator ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Expanded the Finance Calculator</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">react-jsonschema-form</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">GraphQL</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            Expanded module's capabilities to support compliance and localized features for the Australian market.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: Expanded</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Checkout ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Checkout Version 2</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">react-jsonschema-form</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">ApolloClient</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">GraphQL</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                           Developed and launched the enhanced Checkout Version 2 UI, improving the overall user experience.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: launched</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Configurator ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Headless Configurator Integration</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">webpack</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">monorepo</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                           Resolved critical headless CMS integration issues for the Configurator across European market deployments.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: launched</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 space-y-2">
+                        <div class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase">[ Sales Enablement ]</div>
+                        <h3 class="text-2xl font-bold tracking-tight group-hover:text-neutral-500 transition-colors">Sales Enablement Enhancements</h3>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">React</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">webpack</span>
+                            <span class="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 text-[10px] font-mono uppercase tracking-wider rounded">monorepo</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
+                        <p class="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                           Implemented new car configuration features within the Sales Enablement tool to streamline dealer-to-client operations.
+                        </p>
+                        <div class="font-mono text-xs tracking-wider uppercase pt-2">
+                            <span class="text-neutral-400 dark:text-neutral-500">// Status: implemented</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+
+    <main id="page-contact" class="tab-content">
+        <section class="max-w-7xl mx-auto px-6 py-16 md:py-24 border-b grid-border text-center space-y-8">
+            <div class="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-mono">[ Let's make things happen ]</div>
+            <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tighter">GET IN TOUCH</h2>
+            <p class="text-lg font-light text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto normal-case tracking-normal">
+                Open to technical discussion, or a partner for both design and engineering — I'm ready to contribute.
+            </p>
+            
+            <div class="pt-8 flex flex-col sm:flex-row justify-center items-center gap-6 font-mono text-xs tracking-widest uppercase">
+                <a href="mailto:bautistaryan583@gmail.com" class="px-6 py-4 border grid-border rounded-lg hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                    ↳ Email Address
+                </a>
+                <a href="https://www.linkedin.com/in/ryan3sg" target="_blank" class="px-6 py-4 border grid-border rounded-lg hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                    ↳ LinkedIn
+                </a>
+                <a href="https://github.com/ryan3sg" target="_blank" class="px-6 py-4 border grid-border rounded-lg hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                    ↳ GitHub
+                </a>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="border-t grid-border bg-stone-100 dark:bg-neutral-900/40">
+        <div class="max-w-7xl mx-auto px-6 py-6 text-[10px] text-neutral-400 font-mono flex justify-between uppercase tracking-widest">
+            <span>RYAN BAUTISTA © 2026</span>
+            <span>ALL RIGHTS RESERVED</span>
+        </div>
+    </footer>
+
+
+    <script>
+        // 1. Theme Configuration
+        const html = document.documentElement;
+        const toggleBtn = document.getElementById('theme-toggle');
+
+        toggleBtn.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        if (localStorage.getItem('theme') === 'light') {
+            html.classList.remove('dark');
+        }
+
+        // 2. Tab Navigation with Smooth Fluid Transition Motion
+        function switchTab(tabId) {
+            const currentActive = document.querySelector('.tab-content.active');
+            const targetActive = document.getElementById(`page-${tabId}`);
+            
+            if (currentActive === targetActive) return;
+
+            // Step A: Smoothly fade out current layout block
+            if (currentActive) {
+                currentActive.classList.remove('visible');
+                
+                // Allow completion of fade out transition (400ms)
+                setTimeout(() => {
+                    currentActive.classList.remove('active');
+                    executeIncomingTab(targetActive, tabId);
+                }, 400);
+            } else {
+                executeIncomingTab(targetActive, tabId);
+            }
+        }
+
+        function executeIncomingTab(targetElement, tabId) {
+            // Step B: Instantly snap frame position to top of context window smoothly
+            window.scrollTo({ top: 0 });
+            
+            // Step C: Activate and fade/slide inside the new page layer
+            targetElement.classList.add('active');
+            
+            // Micro-delay forcing structural DOM render loop before animation calculations
+            setTimeout(() => {
+                targetElement.classList.add('visible');
+            }, 20);
+
+            // Manage top desk desktop links visual markers
+            const buttons = document.querySelectorAll('.nav-link');
+            buttons.forEach(btn => {
+                if(btn.innerHTML.toLowerCase().includes(tabId)) {
+                    btn.classList.add('text-neutral-900', 'dark:text-white', 'font-bold');
+                    btn.classList.remove('text-neutral-400', 'dark:text-neutral-500');
+                } else {
+                    btn.classList.remove('text-neutral-900', 'dark:text-white', 'font-bold');
+                    btn.classList.add('text-neutral-400', 'dark:text-neutral-500');
+                }
+            });
+        }
+
+        // 3. Responsive Mobile Menu Drawer Controls
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        let menuOpen = false;
+
+        function toggleMobileMenu() {
+            menuOpen = !menuOpen;
+            if(menuOpen) {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                mobileMenu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                line1.classList.add('transform', 'rotate-45', 'translate-y-[4px]');
+                line2.classList.add('w-6', 'transform', '-rotate-45', '-translate-y-[4px]');
+            } else {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                line1.classList.remove('transform', 'rotate-45', 'translate-y-[4px]');
+                line2.classList.remove('w-6', 'transform', '-rotate-45', '-translate-y-[4px]');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMobileMenu);
+
+        // 4. Kinetic Text Rotator Matrix Engine (Option A Configuration)
+        const textPairs = [
+            { line1: "CRAFTING", line2: "WEB" },
+            { line1: "BUILDING", line2: "APPS" },
+            { line1: "SCALING",  line2: "CODES" }
+        ];
+        
+        let textIndex = 0;
+        const elLine1 = document.getElementById('hero-line1');
+        const elLine2 = document.getElementById('hero-line2');
+
+        setInterval(() => {
+            // Apply animation translation triggers (hide out)
+            elLine1.classList.add('text-hidden');
+            elLine2.classList.add('text-hidden');
+
+            setTimeout(() => {
+                // Calculate next index matrix point
+                textIndex = (textIndex + 1) % textPairs.length;
+                
+                // Set structural inner string properties
+                elLine1.textContent = textPairs[textIndex].line1;
+                elLine2.textContent = textPairs[textIndex].line2;
+                
+                // Clear state animation classes (slide back into view)
+                elLine1.classList.remove('text-hidden');
+                elLine2.classList.remove('text-hidden');
+            }, 350); // Synchronized fully with CSS transition delay calculations
+        }, 3500); // Transitions every 3.5 seconds
+    </script>
 </body>
 </html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryan Bautista — Front End Technical Lead</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              beige: { 50:'#FAF8F5', 100:'#F5F0EB', 200:'#EDE7E0', 300:'#E0D5C8', 400:'#C8B89A', 500:'#B0A080' },
+              charcoal: { 50:'#999', 100:'#777', 200:'#555', 300:'#3A3228', 400:'#2A2A2A', 500:'#1A1A1A', 600:'#111' }
+            },
+            fontFamily: { sans: ['Inter','sans-serif'] }
+          }
+        }
+      }
+    </script>
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        ::selection { background:rgba(200,184,154,0.35); color:#1A1A1A; }
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:#F5F0EB; }
+        ::-webkit-scrollbar-thumb { background:#C8B89A; border-radius:10px; }
+        ::-webkit-scrollbar-thumb:hover { background:#B0A080; }
+
+        .grain { position:relative; }
+        .grain::after {
+          content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.04;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 256px 256px;
+        }
+
+        .bw-img { filter:grayscale(100%) contrast(1.08) brightness(0.95); }
+
+        .fade-up {
+          opacity:0; transform:translateY(40px);
+          transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .fade-up.visible { opacity:1; transform:translateY(0); }
+
+        .fade-in {
+          opacity:0;
+          transition: opacity 1s cubic-bezier(0.16,1,0.3,1);
+        }
+        .fade-in.visible { opacity:1; }
+
+        .stagger-1 { transition-delay:0.1s; }
+        .stagger-2 { transition-delay:0.2s; }
+        .stagger-3 { transition-delay:0.3s; }
+        .stagger-4 { transition-delay:0.4s; }
+        .stagger-5 { transition-delay:0.5s; }
+
+        .stat-divider {
+          width:1px; height:48px;
+          background: linear-gradient(to bottom, transparent, rgba(26,26,26,0.15), transparent);
+        }
+
+        .timeline-line {
+          position:absolute; left:11px; top:24px; bottom:0; width:1px;
+          background: linear-gradient(to bottom, rgba(26,26,26,0.15), transparent);
+        }
+
+        .timeline-dot {
+          width:10px; height:10px; border-radius:50%; border:2px solid #C8B89A;
+          background:#F5F0EB; position:relative; z-index:2; flex-shrink:0;
+          transition: background 0.3s, border-color 0.3s;
+        }
+        .timeline-entry:hover .timeline-dot { background:#C8B89A; border-color:#3A3228; }
+
+        .nav-scrolled {
+          background:rgba(245,240,235,0.9) !important;
+          backdrop-filter:blur(16px) !important;
+          border-bottom:1px solid rgba(26,26,26,0.06) !important;
+        }
+
+        .card-hover {
+          transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+        }
+        .card-hover:hover {
+          transform:translateY(-4px);
+          box-shadow: 0 20px 60px -15px rgba(26,26,26,0.1);
+        }
+
+        .underline-anim {
+          position:relative; display:inline-block;
+        }
+        .underline-anim::after {
+          content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px;
+          background:#C8B89A; transition:width 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .underline-anim:hover::after { width:100%; }
+
+        .scroll-indicator {
+          animation: scrollBounce 2s ease-in-out infinite;
+        }
+        @keyframes scrollBounce {
+          0%,100% { transform:translateY(0); opacity:0.6; }
+          50% { transform:translateY(8px); opacity:1; }
+        }
+
+        @keyframes heroReveal {
+          from { opacity:0; transform:translateY(30px); }
+          to { opacity:1; transform:translateY(0); }
+        }
+        .hero-anim { animation: heroReveal 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .hero-anim-d1 { animation-delay:0.15s; opacity:0; }
+        .hero-anim-d2 { animation-delay:0.3s; opacity:0; }
+        .hero-anim-d3 { animation-delay:0.5s; opacity:0; }
+        .hero-anim-d4 { animation-delay:0.7s; opacity:0; }
+
+        .mobile-menu {
+          transform:translateX(100%);
+          transition: transform 0.5s cubic-bezier(0.32,0.72,0,1);
+        }
+        .mobile-menu.open { transform:translateX(0); }
+
+        .work-card {
+          border-left: 2px solid transparent;
+          transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .work-card:hover {
+          border-left-color: #C8B89A;
+          background: rgba(245,240,235,0.5);
+        }
+    </style>
+  </head>
+  <body class="grain bg-beige-100 text-charcoal-500 font-sans antialiased overflow-x-hidden">
+
+    <!-- SVG Grain Filter (fallback) -->
+    <svg style="position:fixed;width:0;height:0;pointer-events:none">
+      <filter id="grain-filter"><feturbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" /></filter>
+    </svg>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
+      <div class="max-w-7xl mx-auto px-5 md:px-8">
+        <div class="flex items-center justify-between h-16 md:h-20">
+          <a href="#hero" class="text-charcoal-500 font-extrabold text-lg tracking-tight">RB</a>
+          <div class="hidden md:flex items-center gap-8">
+            <a href="#curriculum" class="text-xs font-medium uppercase tracking-widest text-charcoal-200 hover:text-charcoal-500 transition-colors underline-anim">Curriculum</a>
+            <a href="#about" class="text-xs font-medium uppercase tracking-widest text-charcoal-200 hover:text-charcoal-500 transition-colors underline-anim">About</a>
+            <a href="#work" class="text-xs font-medium uppercase tracking-widest text-charcoal-200 hover:text-charcoal-500 transition-colors underline-anim">Work</a>
+            <a href="#contact" class="text-xs font-semibold uppercase tracking-widest bg-charcoal-500 text-beige-100 px-5 py-2.5 hover:bg-charcoal-400 transition-colors">Contact</a>
+          </div>
+          <button id="menuBtn" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5" aria-label="Menu">
+            <span class="menu-line w-5 h-[1.5px] bg-charcoal-500 transition-all duration-300 origin-center"></span>
+            <span class="menu-line w-5 h-[1.5px] bg-charcoal-500 transition-all duration-300"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-beige-100 flex flex-col items-center justify-center gap-8">
+      <a href="#curriculum" class="mobile-link text-2xl font-bold tracking-tight text-charcoal-500">Curriculum</a>
+      <a href="#about" class="mobile-link text-2xl font-bold tracking-tight text-charcoal-500">About</a>
+      <a href="#work" class="mobile-link text-2xl font-bold tracking-tight text-charcoal-500">Work</a>
+      <a href="#contact" class="mobile-link text-2xl font-bold tracking-tight text-charcoal-500">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center bg-beige-100">
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image:radial-gradient(circle at 1px 1px, rgba(26,26,26,0.5) 1px, transparent 0); background-size:40px 40px;"></div>
+      <div class="max-w-7xl mx-auto px-5 md:px-8 w-full pt-24 pb-16 md:pt-0 md:pb-0">
+        <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div class="order-2 md:order-1">
+            <div class="hero-anim hero-anim-d1 mb-4">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-beige-400">Front End Technical Lead</span>
+            </div>
+            <h1 class="hero-anim hero-anim-d2 text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black leading-[0.92] tracking-tighter text-charcoal-500">
+              Ryan<br>Bautista
+            </h1>
+            <div class="hero-anim hero-anim-d3 mt-6 md:mt-8 flex items-center gap-4 md:gap-6">
+              <div class="stat-divider hidden sm:block"></div>
+              <div class="flex items-center gap-4 md:gap-6">
+                <div>
+                  <span class="text-3xl md:text-4xl font-black tracking-tight text-charcoal-500">12</span>
+                  <span class="block text-[10px] font-medium uppercase tracking-widest text-charcoal-50 mt-1">Years</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div>
+                  <span class="text-3xl md:text-4xl font-black tracking-tight text-charcoal-500">80%</span>
+                  <span class="block text-[10px] font-medium uppercase tracking-widest text-charcoal-50 mt-1">Front-End</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div>
+                  <span class="text-3xl md:text-4xl font-black tracking-tight text-charcoal-500">20%</span>
+                  <span class="block text-[10px] font-medium uppercase tracking-widest text-charcoal-50 mt-1">Back-End</span>
+                </div>
+              </div>
+            </div>
+            <p class="hero-anim hero-anim-d4 mt-6 md:mt-8 text-sm md:text-base text-charcoal-200 leading-relaxed max-w-md">
+              Award-winning developer delivering high-performance web applications for international clients and major local institutions.
+            </p>
+          </div>
+          <div class="order-1 md:order-2 hero-anim hero-anim-d2">
+            <div class="relative overflow-hidden aspect-[4/5] md:aspect-[3/4]">
+              <img src="https://picsum.photos/seed/laptop-office-pro/900/1200" alt="Professional workspace" class="bw-img w-full h-full object-cover" data-parallax="0.08">
+              <div class="absolute inset-0 bg-gradient-to-t from-beige-100/40 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
+        <span class="iconify text-charcoal-50 text-xl" data-icon="ph:arrow-down"></span>
+      </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="relative py-24 md:py-36 bg-beige-50">
+      <div class="max-w-7xl mx-auto px-5 md:px-8">
+        <div class="fade-up mb-14 md:mb-20">
+          <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-beige-400">Development Philosophy</span>
+          <h2 class="mt-3 text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95] text-charcoal-500">Curriculum</h2>
+          <p class="mt-4 text-sm text-charcoal-200 max-w-lg leading-relaxed">Three pillars that guide every line of code, every design decision, and every architecture choice.</p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-5 md:gap-6">
+          <!-- Pixel Perfect -->
+          <div class="fade-up stagger-1 card-hover bg-beige-100 border border-charcoal-500/[0.06] p-7 md:p-8 group">
+            <div class="w-11 h-11 rounded-lg bg-charcoal-500 text-beige-100 flex items-center justify-center mb-6">
+              <span class="iconify text-xl" data-icon="ph:crosshair-bold"></span>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold tracking-tight text-charcoal-500">Pixel Perfect</h3>
+            <div class="w-8 h-[1.5px] bg-beige-400 mt-3 mb-4"></div>
+            <p class="text-sm text-charcoal-200 leading-relaxed">Meticulous attention to detail ensuring every pixel aligns with design specifications. Cross-browser precision with zero-compromise
+              fidelity.</p>
+            <ul class="mt-5 space-y-2">
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Design-to-code accuracy
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Responsive precision
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Visual regression testing
+              </li>
+            </ul>
+          </div>
+          <!-- Animation -->
+          <div class="fade-up stagger-2 card-hover bg-beige-100 border border-charcoal-500/[0.06] p-7 md:p-8 group">
+            <div class="w-11 h-11 rounded-lg bg-charcoal-500 text-beige-100 flex items-center justify-center mb-6">
+              <span class="iconify text-xl" data-icon="ph:play-bold"></span>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold tracking-tight text-charcoal-500">Animation</h3>
+            <div class="w-8 h-[1.5px] bg-beige-400 mt-3 mb-4"></div>
+            <p class="text-sm text-charcoal-200 leading-relaxed">Smooth, purposeful micro-interactions that elevate user experience. Performance-first animations that feel natural, never forced.</p>
+            <ul class="mt-5 space-y-2">
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                CSS & JS animation expertise
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                60fps performance target
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Meaningful motion design
+              </li>
+            </ul>
+          </div>
+          <!-- Consistency -->
+          <div class="fade-up stagger-3 card-hover bg-beige-100 border border-charcoal-500/[0.06] p-7 md:p-8 group">
+            <div class="w-11 h-11 rounded-lg bg-charcoal-500 text-beige-100 flex items-center justify-center mb-6">
+              <span class="iconify text-xl" data-icon="ph:grid-four-bold"></span>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold tracking-tight text-charcoal-500">Consistency</h3>
+            <div class="w-8 h-[1.5px] bg-beige-400 mt-3 mb-4"></div>
+            <p class="text-sm text-charcoal-200 leading-relaxed">Unified design systems and code standards across projects and teams. Building shared foundations that scale with the organization.</p>
+            <ul class="mt-5 space-y-2">
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Component library governance
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Code review standards
+              </li>
+              <li class="flex items-start gap-2 text-xs text-charcoal-100">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:check-bold"></span>
+                Technical documentation
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative py-24 md:py-36 bg-beige-100">
+      <div class="max-w-7xl mx-auto px-5 md:px-8">
+        <div class="grid md:grid-cols-5 gap-12 md:gap-16 items-start">
+          <div class="md:col-span-3">
+            <div class="fade-up">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-beige-400">Professional Background</span>
+              <h2 class="mt-3 text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95] text-charcoal-500">About Me</h2>
+            </div>
+            <div class="fade-up stagger-1 mt-8 space-y-5">
+              <p class="text-sm md:text-[15px] text-charcoal-200 leading-[1.75]">
+                With 12 years of industry experience, my career demonstrates a strong evolution from a Web Designer to a Front End Technical Lead and Full-Stack Developer. My expertise is weighted 80%
+                toward Front-End and 20% toward Back-End development.
+              </p>
+              <p class="text-sm md:text-[15px] text-charcoal-200 leading-[1.75]">
+                I am an award-winning developer with a proven track record of delivering high-performance web applications for international clients across the UK and Australia, as well as major local
+                institutions. I have successfully led teams, implemented automated testing, and optimized complex architectures across various tech stacks.
+              </p>
+            </div>
+            <div class="fade-up stagger-2 mt-10 relative overflow-hidden aspect-[16/9] md:aspect-[21/9]">
+              <img src="https://picsum.photos/seed/desk-setup-bw/1400/600" alt="Professional workspace" class="bw-img w-full h-full object-cover" data-parallax="0.05">
+              <div class="absolute inset-0 bg-gradient-to-r from-beige-100/30 to-transparent"></div>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <div class="fade-up stagger-2 sticky top-24">
+              <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-beige-400 mb-6">Technical Skills</h3>
+              <!-- Front-End -->
+              <div class="mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="iconify text-beige-400 text-sm" data-icon="ph:monitor-bold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-charcoal-500">Front-End</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">React.js</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Next.js</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Vue.js</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Gatsby.js</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Redux</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">MUI</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">SCSS/SASS</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">GraphQL</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Apollo</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Micro Frontends</span>
+                </div>
+              </div>
+              <!-- Back-End -->
+              <div class="mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="iconify text-beige-400 text-sm" data-icon="ph:database-bold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-charcoal-500">Back-End</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Node.js</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Loopback4</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">MongoDB</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">OracleDB</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Microservices</span>
+                </div>
+              </div>
+              <!-- Tools -->
+              <div class="mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="iconify text-beige-400 text-sm" data-icon="ph:wrench-bold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-charcoal-500">Tools & Testing</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Cypress</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Mocha</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Jira</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Confluence</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">GA4</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">GTM</span>
+                </div>
+              </div>
+              <!-- Architecture -->
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="iconify text-beige-400 text-sm" data-icon="ph:blueprint-bold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-charcoal-500">Architecture</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Unit Testing</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Tech Documentation</span>
+                  <span class="text-[11px] font-medium text-charcoal-200 bg-beige-200 px-2.5 py-1">Performance Optimization</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work History Section -->
+    <section id="work" class="relative py-24 md:py-36 bg-beige-50">
+      <div class="max-w-7xl mx-auto px-5 md:px-8">
+        <div class="fade-up mb-14 md:mb-20">
+          <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-beige-400">Experience</span>
+          <h2 class="mt-3 text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95] text-charcoal-500">Work History</h2>
+          <p class="mt-4 text-sm text-charcoal-200 max-w-lg leading-relaxed">A trajectory of growth — from foundational design work to leading technical teams at scale.</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Metrobank -->
+          <div class="fade-up stagger-1 work-card rounded-lg p-6 md:p-8 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-1">
+                  <h3 class="text-base md:text-lg font-bold tracking-tight text-charcoal-500">Metrobank</h3>
+                  <span class="text-[9px] font-bold uppercase tracking-wider bg-charcoal-500 text-beige-100 px-2 py-0.5">Current</span>
+                </div>
+                <p class="text-xs font-medium text-beige-400 uppercase tracking-wider">Full Stack Developer</p>
+              </div>
+              <span class="text-xs text-charcoal-50 font-medium whitespace-nowrap">Present</span>
+            </div>
+            <ul class="space-y-2.5">
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Developing frontend modules using React.js and Redux Saga within a Micro Frontend architecture.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Building backend logic using Node.js (Loopback4) with MongoDB and OracleDB.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Integrating automated testing via Cypress and Mocha.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Inchcape -->
+          <div class="fade-up stagger-2 work-card rounded-lg p-6 md:p-8 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base md:text-lg font-bold tracking-tight text-charcoal-500 mb-1">Inchcape Digital</h3>
+                <p class="text-xs font-medium text-beige-400 uppercase tracking-wider">Technical Lead (Front-End)</p>
+              </div>
+              <span class="text-xs text-charcoal-50 font-medium whitespace-nowrap">Previous</span>
+            </div>
+            <ul class="space-y-2.5">
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Promoted from Front End Developer to Technical Lead.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Led the integration of frontend components into various host websites using GraphQL and MUI.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Implemented Cypress for unit test automation.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:trophy-bold"></span>
+                <span><strong class="text-charcoal-500 font-semibold">Q4 Top Performer</strong> — Recognized for a successful 3-month GA4/Tag Manager implementation.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- EMAPTA -->
+          <div class="fade-up stagger-3 work-card rounded-lg p-6 md:p-8 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base md:text-lg font-bold tracking-tight text-charcoal-500 mb-1">EMAPTA / Acurus Pty Ltd</h3>
+                <p class="text-xs font-medium text-beige-400 uppercase tracking-wider">Front End Developer</p>
+              </div>
+              <span class="text-xs text-charcoal-50 font-medium whitespace-nowrap">Previous</span>
+            </div>
+            <ul class="space-y-2.5">
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Managed a diverse tech stack including React.js, Gatsby, and WordPress.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Collaborated with Australian stakeholders to ensure high-speed application performance and input validation.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Maintained rigorous documentation and workflow tracking via Jira.
+              </li>
+            </ul>
+          </div>
+
+          <!-- W-Tech -->
+          <div class="fade-up stagger-4 work-card rounded-lg p-6 md:p-8 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base md:text-lg font-bold tracking-tight text-charcoal-500 mb-1">W-Tech Solutions Inc.</h3>
+                <p class="text-xs font-medium text-beige-400 uppercase tracking-wider">Front End Developer</p>
+              </div>
+              <span class="text-xs text-charcoal-50 font-medium whitespace-nowrap">Previous</span>
+            </div>
+            <ul class="space-y-2.5">
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Focused on game development visual elements and interactive features using Vue.js and SCSS.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Built reusable code libraries to ensure future scalability and solved complex logic issues in the game dev space.
+              </li>
+            </ul>
+          </div>
+
+          <!-- TCS -->
+          <div class="fade-up stagger-5 work-card rounded-lg p-6 md:p-8 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base md:text-lg font-bold tracking-tight text-charcoal-500 mb-1">Tata Consultancy Services / Hibu PH</h3>
+                <p class="text-xs font-medium text-beige-400 uppercase tracking-wider">Web Designer & Front End Developer</p>
+              </div>
+              <span class="text-xs text-charcoal-50 font-medium whitespace-nowrap">Previous</span>
+            </div>
+            <ul class="space-y-2.5">
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="w-1 h-1 rounded-full bg-beige-400 mt-2 flex-shrink-0"></span>
+                Foundational Years — Started with pure HTML/CSS, translating UK-based designs into cross-browser compatible websites.
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-charcoal-200 leading-relaxed">
+                <span class="iconify text-beige-400 mt-0.5 flex-shrink-0" data-icon="ph:trophy-bold"></span>
+                <span><strong class="text-charcoal-500 font-semibold">Repeatedly awarded Top Performer</strong> for excellence in supporting UK clients.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative py-28 md:py-40 bg-charcoal-500 overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.04]" style="background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0); background-size:32px 32px;"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-beige-400/[0.03] blur-[120px]"></div>
+      <div class="max-w-3xl mx-auto px-5 md:px-8 text-center relative z-10">
+        <div class="fade-up">
+          <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-beige-400">Let's Connect</span>
+        </div>
+        <h2 class="fade-up stagger-1 mt-5 text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95] text-beige-100">
+          Build Something<br>Great Together
+        </h2>
+        <p class="fade-up stagger-2 mt-6 text-sm md:text-base text-charcoal-50 leading-relaxed max-w-md mx-auto">
+          Whether you need a technical lead, a full-stack developer, or a partner who understands both design and engineering — I'm ready to contribute.
+        </p>
+        <div class="fade-up stagger-3 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="mailto:ryan.bautista@email.com"
+            class="inline-flex items-center gap-2.5 bg-beige-100 text-charcoal-500 font-semibold text-sm px-8 py-4 hover:bg-beige-200 transition-colors tracking-wide">
+            <span class="iconify text-base" data-icon="ph:envelope-bold"></span>
+            Get In Touch
+          </a>
+          <a href="#"
+            class="inline-flex items-center gap-2.5 border border-beige-100/20 text-beige-100 font-semibold text-sm px-8 py-4 hover:border-beige-100/50 hover:bg-beige-100/5 transition-all tracking-wide">
+            <span class="iconify text-base" data-icon="ph:file-arrow-down-bold"></span>
+            Download CV
+          </a>
+        </div>
+        <div class="fade-up stagger-4 mt-14 flex items-center justify-center gap-5">
+          <a href="#" class="w-10 h-10 rounded-full border border-beige-100/10 flex items-center justify-center text-beige-100/50 hover:text-beige-100 hover:border-beige-100/30 transition-all"
+            aria-label="LinkedIn">
+            <span class="iconify text-lg" data-icon="ph:linkedin-logo-bold"></span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full border border-beige-100/10 flex items-center justify-center text-beige-100/50 hover:text-beige-100 hover:border-beige-100/30 transition-all"
+            aria-label="GitHub">
+            <span class="iconify text-lg" data-icon="ph:github-logo-bold"></span>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full border border-beige-100/10 flex items-center justify-center text-beige-100/50 hover:text-beige-100 hover:border-beige-100/30 transition-all"
+            aria-label="Twitter">
+            <span class="iconify text-lg" data-icon="ph:x-logo-bold"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-charcoal-600 border-t border-white/[0.04]">
+      <div class="max-w-7xl mx-auto px-5 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-xs text-white/25">&copy; 2026 Ryan Bautista. All rights reserved.</p>
+        <p class="text-xs text-white/25">Crafted with precision and purpose.</p>
+      </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const menuLines = menuBtn.querySelectorAll('.menu-line');
+        let menuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('open', menuOpen);
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+            if (menuOpen) {
+                menuLines[0].style.transform = 'rotate(45deg) translate(2px, 2px)';
+                menuLines[1].style.opacity = '0';
+            } else {
+                menuLines[0].style.transform = '';
+                menuLines[1].style.opacity = '1';
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+                menuLines[0].style.transform = '';
+                menuLines[1].style.opacity = '1';
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const scrollY = window.pageYOffset;
+            if (scrollY > 60) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+            lastScroll = scrollY;
+        }, { passive: true });
+
+        // Parallax
+        const parallaxEls = document.querySelectorAll('[data-parallax]');
+        let parallaxTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.pageYOffset;
+                    parallaxEls.forEach(el => {
+                        const speed = parseFloat(el.dataset.parallax);
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            el.style.transform = `translateY(${scrollY * speed}px) scale(1.1)`;
+                        }
+                    });
+                    parallaxTicking = false;
+                });
+                parallaxTicking = true;
+            }
+        }, { passive: true });
+
+        // Initialize parallax images with scale
+        parallaxEls.forEach(el => {
+            el.style.transform = 'scale(1.1)';
+            el.style.willChange = 'transform';
+        });
+
+        // Scroll animations with Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -60px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up, .fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('text-charcoal-500');
+                            link.classList.remove('text-charcoal-200');
+                        } else if (!link.classList.contains('bg-charcoal-500')) {
+                            link.classList.remove('text-charcoal-500');
+                            link.classList.add('text-charcoal-200');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-40% 0px -55% 0px' });
+
+        sections.forEach(section => sectionObserver.observe(section));
+    </script>
+  </body>
+</html>
